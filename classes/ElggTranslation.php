@@ -6,6 +6,9 @@
  */
 class ElggTranslation extends ElggObject{
 	
+	/**
+	* Initialize some defaults values for the entity.
+ 	*/	
 	protected function initializeAttributes(){
 		parent::initializeAttributes();
 		
@@ -40,8 +43,45 @@ class ElggTranslation extends ElggObject{
                 }
                 return add_entity_relationship($blog_guid, "translation", $translation_guid);
         }
+
 	
 	/**
 	* Get a translation
+	* 	- Receives the language of the translation we want to get.
+	*	- Return the entity of the translation if succeed.
+	* 	- Return false if doesnt not exist.
 	*/
+	public function getTranslation($language){
+		$entities = get_entities_from_relationship(array(
+			'relationship' => "translation",
+			'relationship_guid' => $this
+        	));
+		foreach($entities as $entitie){
+			if($entitie->language == $language){
+				return $entitie;
+			}else{
+				return false;
+			}
+		}
+	}
+
+
+	/**
+	* Delete a translation
+	*	- Receives the language of the translation we want to delete.
+  	*	- Return false if fails.
+	*/
+	public function deleteTranslation($language){
+		if($entity = getTranslation($language)){
+			//if($entity is instanceof ElggBlog){
+				$entity->delete();
+			//}else{
+			//	return false;
+			//}
+		}else{
+			return false;
+		}
+	}
+
+
 }

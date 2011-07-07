@@ -48,6 +48,7 @@ $values = array(
 	'comments_on' => 'On',
 	'excerpt' => '',
 	'tags' => '',
+	'language' => '',
 	'container_guid' => (int)get_input('container_guid'),
 );
 
@@ -83,7 +84,12 @@ foreach ($values as $name => $default) {
 			}
 			$values[$name] = $value;
 			break;
-
+		
+		case 'language':
+			error_log("LANGUAGE " . $value);
+			$values[$name] = $value;
+			break;
+	
 		case 'container_guid':
 			// this can't be empty or saving the base entity fails
 			if (!empty($value)) {

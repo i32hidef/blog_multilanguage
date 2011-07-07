@@ -123,6 +123,11 @@ $access_input = elgg_view('input/access', array(
 	'id' => 'blog_access_id',
 ));
 
+$language_label = elgg_echo('language');
+$language_input = elgg_view('input/text', array(
+        'name' => 'language',
+        'id' => 'language_id',
+));
 
 $categories_input = elgg_view('categories', $vars);
 
@@ -157,6 +162,11 @@ $draft_warning
 	$body_input
 	<br />
 
+<div>
+	<label for="blog_language">$language_label</label>
+	$language_input
+	<br />
+</div>
 <div>
 	<label for="blog_tags">$tags_label</label>
 	$tags_input
