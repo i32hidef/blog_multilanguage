@@ -28,7 +28,7 @@ if ($guid) {
 	// save some data for revisions once we save the new edit
 	$revision_text = $blog->description;
 	$new_post = $blog->new_post;
-	
+		
 	//$language = get_input('language');
 	//We save the translation entity	
 	$blogTranslated = new ElggBlog();
@@ -85,8 +85,10 @@ foreach ($values as $name => $default) {
 			$values[$name] = $value;
 			break;
 		
+		/* Is not necesary*/
 		case 'language':
-			error_log("LANGUAGE " . $value);
+			$blogTranslated->set($name, $value);
+			error_log("LANGUAGE " . $blogTranslated->$name);
 			$values[$name] = $value;
 			break;
 	
@@ -137,7 +139,7 @@ if (!$error) {
 
 		// no longer a brand new post.
 		$blogTranslated->clearMetadata('new_post');
-
+		error_log("ACTION LANGUAGE " . $blogTranslated->language);
 		// if this was an edit, create a revision annotation
 		if (!$new_post && $revision_text) {
 			$blogTranslated->annotate('blog_revision', $revision_text);

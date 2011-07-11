@@ -13,18 +13,55 @@ class ElggTranslation extends ElggObject{
 		parent::initializeAttributes();
 		
 		$this->attributes['subtype'] = "translation";
-		$this->attributes['language'] = NULL;
+		$this->attributes['language'] = 'yeyea';
 	}
+		
+	public function __set($name, $value){
+		if($name == 'language'){
+			$this->attributes['language'] = $value;
+			error_log("__SET " . $value);
+			return TRUE;
+		}else{
+			//error_log("__SET " . $value);
+			return parent::__set($name,$language);
+		}
+	}
+		
+	public function __get($name){
+		if($name == 'language'){
+			return $this->attributes['language'];
+			error_log("__GET " . $name);
+		}else{
+			//error_log("__GET " . $name);
+			return parent::__get($name);
+		}
+	}
+	//Do not save subtype or access
+	public function save(){
+		error_log("SAVING");
+		if(!parent::save()){
+			error_log("NO PARENT");
+			return false;
+		}
+		//Save the language
+		error_log("SAVE LANGUAGE " . $this->attributes['language']);
+		error_log("GUID " . $this->getGUID());
+		error_log("OWNER GUID " . $this->getOwnerEntity()->guid); 
+		create_metadata($this->getGUID(), 'language', $this->attributes['language'], 'text',  $this->getOwnerEntity()->guid , 2, false);
+		return true;
+	}	
 	
-	
+		
 	/**
         * Add a translation to a blog
 	* In order to add a translation we can do it in two ways.
+	* It has to look for the entity that is being translated, see if is a translation of other
+	* If is make this a translation of this one, if not make himself a translation of the first one.
 	* 	- Saving in the same row the language of the translation
 	*	- Creating other table with the codes of the languages
 	*	
         */
-        public function addTranslation($translation_guid, $language){
+        public function addTranslation($translation_guid){
 		//error_log("BLOG TRANSLATION ADD TRANSLATION");
                 $blog_guid = $this->getGUID();
 		error_log("ADDING TRANSLATION TO " . $this->guid . " WITH " . $translation_guid); 
@@ -54,7 +91,7 @@ class ElggTranslation extends ElggObject{
 	public function getTranslation($language){
 		$entities = get_entities_from_relationship(array(
 			'relationship' => "translation",
-			'relationship_guid' => $this
+			'relationship_guid' => $this->getGUID()
         	));
 		foreach($entities as $entitie){
 			if($entitie->language == $language){
@@ -73,15 +110,14 @@ class ElggTranslation extends ElggObject{
 	*/
 	public function deleteTranslation($language){
 		if($entity = getTranslation($language)){
-			//if($entity is instanceof ElggBlog){
+			if(elgg_instanceof($entity,'object','translation')){
 				$entity->delete();
-			//}else{
-			//	return false;
-			//}
+			}else{
+				return false;
+			}
 		}else{
 			return false;
 		}
 	}
-
 
 }

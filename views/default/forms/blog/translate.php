@@ -167,6 +167,7 @@ $draft_warning
 	$language_input
 	<br />
 </div>
+
 <div>
 	<label for="blog_tags">$tags_label</label>
 	$tags_input

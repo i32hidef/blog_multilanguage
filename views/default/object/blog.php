@@ -7,6 +7,8 @@
 
 $full = elgg_extract('full_view', $vars, FALSE);
 $blog = elgg_extract('entity', $vars, FALSE);
+error_log("VIEW LANGUAGE  " . $blog->language);
+error_log(var_dump($blog));
 
 if (!$blog) {
 	return TRUE;
@@ -98,6 +100,5 @@ HTML;
 		'content' => $excerpt,
 	);
 	$list_body = elgg_view('page/components/summary', $params);
-
 	echo elgg_view_image_block($owner_icon, $list_body);
 }

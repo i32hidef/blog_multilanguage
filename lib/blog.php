@@ -38,7 +38,6 @@ function blog_get_page_content_read($guid = NULL) {
 	}
 
 	elgg_push_breadcrumb($blog->title);
-	elgg_push_breadcrumb("HOLA");
 	$return['content'] = elgg_view_entity($blog, TRUE);
 	//check to see if comment are on
 	if ($blog->comments_on != 'Off') {
@@ -264,9 +263,13 @@ function blog_get_page_content_edit($page, $guid = 0, $revision = NULL) {
 		$blog = get_entity((int)$guid);
 
 		$title = elgg_echo('blog:edit');
-
+		error_log("LANGUAGE " . $blog->language);
+		//$vars['language'] = $blog->language;
 		if (elgg_instanceof($blog, 'object', 'blog') && $blog->canEdit()) {
+			error_log("HOLA");
 			$vars['entity'] = $blog;
+			$vars['language'] = $blog->language;	
+			error_log("LANGUAGE !!!! " . $vars['language']);
 
 			$title .= ": \"$blog->title\"";
 
@@ -346,6 +349,7 @@ function blog_get_page_content_translate($page, $guid = 0, $revision = NULL) {
 
 		if (elgg_instanceof($blog, 'object', 'blog') && $blog->canEdit()) {
 			$vars['entity'] = $blog;
+			$vars['language'] = $blog->language;
 
 			$title .= ": \"$blog->title\"";
 
@@ -405,6 +409,7 @@ function blog_get_page_content_translate($page, $guid = 0, $revision = NULL) {
  */
 function blog_prepare_form_vars($post = NULL, $revision = NULL) {
 
+	error_log("BLOG PREPARE ");
 	// input names => defaults
 	$values = array(
 		'title' => NULL,
@@ -417,12 +422,14 @@ function blog_prepare_form_vars($post = NULL, $revision = NULL) {
 		'container_guid' => NULL,
 		'guid' => NULL,
 		'draft_warning' => '',
+		'language' => '',
 	);
 
 	if ($post) {
 		foreach (array_keys($values) as $field) {
 			if (isset($post->$field)) {
 				$values[$field] = $post->$field;
+				error_log("VALUES CAMPO ". $field . " VALOR " . $post->$field);
 			}
 		}
 	}

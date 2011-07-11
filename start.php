@@ -205,7 +205,6 @@ function blog_multilanguage_entity_menu_setup($hook, $type, $return, $params) {
 	if ($handler != 'blog') {
 		return $return;
 	}
-	error_log("STATUS " . $status_text . "\n");
 	if ($entity->canEdit() && $entity->status != 'published') {
 		$status_text = elgg_echo("blog:status:{$entity->status}");
 		$options = array(

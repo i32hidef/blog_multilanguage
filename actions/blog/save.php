@@ -46,6 +46,7 @@ $values = array(
 	'comments_on' => 'On',
 	'excerpt' => '',
 	'tags' => '',
+	'language' => '',
 	'container_guid' => (int)get_input('container_guid'),
 );
 
@@ -102,6 +103,7 @@ foreach ($values as $name => $default) {
 
 		default:
 			$values[$name] = $value;
+			error_log("VALUE " . $values[$name] . " Name " . $name);
 			break;
 	}
 }
@@ -119,6 +121,8 @@ if (!$error) {
 // only try to save base entity if no errors
 if (!$error) {
 	if ($blog->save()) {
+		//error_log("BLOG SAVED " . $blog->seeLanguage());
+		error_log("BLOG SAVED " . $blog->language);
 		// remove sticky form entries
 		elgg_clear_sticky_form('blog');
 
