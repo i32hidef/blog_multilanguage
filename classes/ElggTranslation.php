@@ -12,46 +12,28 @@ class ElggTranslation extends ElggObject{
 	protected function initializeAttributes(){
 		parent::initializeAttributes();
 		
-		$this->attributes['subtype'] = "translation";
-		$this->attributes['language'] = 'yeyea';
 	}
-		
-	public function __set($name, $value){
-		if($name == 'language'){
-			$this->attributes['language'] = $value;
-			error_log("__SET " . $value);
-			return TRUE;
-		}else{
-			//error_log("__SET " . $value);
-			return parent::__set($name,$language);
-		}
+	
+	public function setLanguage($language){
+		$this->language = $language;
 	}
-		
-	public function __get($name){
-		if($name == 'language'){
-			return $this->attributes['language'];
-			error_log("__GET " . $name);
-		}else{
-			//error_log("__GET " . $name);
-			return parent::__get($name);
-		}
-	}
-	//Do not save subtype or access
+	
+	public function getLanguage(){
+		return $this->language;
+	}	
+
+	/**
+	* Save a tranlation
+	*
+	*/
 	public function save(){
-		error_log("SAVING");
 		if(!parent::save()){
-			error_log("NO PARENT");
 			return false;
 		}
-		//Save the language
-		error_log("SAVE LANGUAGE " . $this->attributes['language']);
-		error_log("GUID " . $this->getGUID());
-		error_log("OWNER GUID " . $this->getOwnerEntity()->guid); 
-		create_metadata($this->getGUID(), 'language', $this->attributes['language'], 'text',  $this->getOwnerEntity()->guid , 2, false);
+		$this->setMetadata('language',$this->language);
 		return true;
 	}	
 	
-		
 	/**
         * Add a translation to a blog
 	* In order to add a translation we can do it in two ways.
