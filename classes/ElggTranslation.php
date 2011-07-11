@@ -6,25 +6,180 @@
  */
 class ElggTranslation extends ElggObject{
 	
+	public static $languages = array(
+		"aa",
+		"ab",
+		"af",
+		"am",
+		"ar",
+		"as",
+		"ay",
+		"az",
+		"ba",
+		"be",
+		"bg",
+		"bh",
+		"bi",
+		"bn",
+		"bo",
+		"br",
+		"ca",
+		"co",
+		"cs",
+		"cy",
+		"da",
+		"de",
+		"dz",
+		"el",
+		"en",
+		"eo",
+		"es",
+		"et",
+		"eu",
+		"fa",
+		"fi",
+		"fj",
+		"fo",
+		"fr",
+		"fy",
+		"ga",
+		"gd",
+		"gl",
+		"gn",
+		"gu",
+		"he",
+		"ha",
+		"hi",
+		"hr",
+		"hu",
+		"hy",
+		"ia",
+		"id",
+		"ie",
+		"ik",
+		//"i,
+		"is",
+		"it",
+		"iu",
+		"iw",
+		"ja",
+		"ji",
+		"jw",
+		"ka",
+		"kk",
+		"kl",
+		"km",
+		"kn",
+		"ko",
+		"ks",
+		"ku",
+		"ky",
+		"la",
+		"ln",
+		"lo",
+		"lt",
+		"lv",
+		"mg",
+		"mi",
+		"mk",
+		"ml",
+		"mn",
+		"mo",
+		"mr",
+		"ms",
+		"mt",
+		"my",
+		"na",
+		"ne",
+		"nl",
+		"no",
+		"oc",
+		"om",
+		"or",
+		"pa",
+		"pl",
+		"ps",
+		"pt",
+		"qu",
+		"rm",
+		"rn",
+		"ro",
+		"ru",
+		"rw",
+		"sa",
+		"sd",
+		"sg",
+		"sh",
+		"si",
+		"sk",
+		"sl",
+		"sm",
+		"sn",
+		"so",
+		"sq",
+		"sr",
+		"ss",
+		"st",
+		"su",
+		"sv",
+		"sw",
+		"ta",
+		"te",
+		"tg",
+		"th",
+		"ti",
+		"tk",
+		"tl",
+		"tn",
+		"to",
+		"tr",
+		"ts",
+		"tt",
+		"tw",
+		"ug",
+		"uk",
+		"ur",
+		"uz",
+		"vi",
+		"vo",
+		"wo",
+		"xh",
+		//"y,
+		"yi",
+		"yo",
+		"za",
+		"zh",
+		"zu",
+
+	);
+
 	/**
 	* Initialize some defaults values for the entity.
  	*/	
 	protected function initializeAttributes(){
-		parent::initializeAttributes();
-		
+		parent::initializeAttributes();	
 	}
 	
+	public function getLanguageCodes(){
+		return $languages;
+	}
+
+	/**
+	* Set the language of a Translation
+	*/	
 	public function setLanguage($language){
 		$this->language = $language;
 	}
 	
+	/*
+	* Get the language of a Translation
+	*/
 	public function getLanguage(){
 		return $this->language;
 	}	
 
 	/**
 	* Save a tranlation
-	*
 	*/
 	public function save(){
 		if(!parent::save()){

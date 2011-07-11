@@ -13,7 +13,7 @@
  * @return array
  */
 function blog_get_page_content_read($guid = NULL) {
-
+	error_log("BLOG_GET_PAGE_CONTENT_READ");
 	$return = array();
 
 	$blog = get_entity($guid);
@@ -54,7 +54,7 @@ function blog_get_page_content_read($guid = NULL) {
  * @return array
  */
 function blog_get_page_content_list($container_guid = NULL) {
-
+	error_log("BLOG_GET_PAGE_CONTENT_LIST");
 	$return = array();
 
 	$return['filter_context'] = $container_guid ? 'mine' : 'all';
@@ -115,7 +115,7 @@ function blog_get_page_content_list($container_guid = NULL) {
  * @return array
  */
 function blog_get_page_content_friends($user_guid) {
-
+	error_log("BLOG_GET_PAGE_CONTENT_FRIENDS");
 	$user = get_user($user_guid);
 
 	$return = array();
@@ -173,7 +173,7 @@ function blog_get_page_content_friends($user_guid) {
  * @return array
  */
 function blog_get_page_content_archive($owner_guid, $lower = 0, $upper = 0) {
-
+	error_log("BLOG_GET_PAGE_CONTENT_ARCHIVE");
 	$now = time();
 
 	$user = get_user($owner_guid);
@@ -247,7 +247,7 @@ function blog_get_page_content_archive($owner_guid, $lower = 0, $upper = 0) {
  * @return array
  */
 function blog_get_page_content_edit($page, $guid = 0, $revision = NULL) {
-
+	error_log("BLOG_GET_PAGE_CONTENT_EDIT");
 	elgg_load_js('elgg.blog');
 
 	$return = array(
@@ -263,13 +263,9 @@ function blog_get_page_content_edit($page, $guid = 0, $revision = NULL) {
 		$blog = get_entity((int)$guid);
 
 		$title = elgg_echo('blog:edit');
-		error_log("LANGUAGE " . $blog->language);
-		//$vars['language'] = $blog->language;
 		if (elgg_instanceof($blog, 'object', 'blog') && $blog->canEdit()) {
-			error_log("HOLA");
 			$vars['entity'] = $blog;
 			$vars['language'] = $blog->language;	
-			error_log("LANGUAGE !!!! " . $vars['language']);
 
 			$title .= ": \"$blog->title\"";
 
@@ -330,7 +326,7 @@ function blog_get_page_content_edit($page, $guid = 0, $revision = NULL) {
  * @return array
  */
 function blog_get_page_content_translate($page, $guid = 0, $revision = NULL) {
-
+	error_log("BLOG_GET_PAGE_CONTENT_TRANSLATE");
 	elgg_load_js('elgg.blog');
 
 	$return = array(
@@ -408,8 +404,7 @@ function blog_get_page_content_translate($page, $guid = 0, $revision = NULL) {
  * @return array
  */
 function blog_prepare_form_vars($post = NULL, $revision = NULL) {
-
-	error_log("BLOG PREPARE ");
+	error_log("BLOG PREPARE FORM VARS ");
 	// input names => defaults
 	$values = array(
 		'title' => NULL,

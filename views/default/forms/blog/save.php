@@ -88,11 +88,20 @@ $access_input = elgg_view('input/access', array(
 	'value' => $vars['access_id']
 ));
 
+//THIS HAS TO BE MOVED FROM HERE
+//If is new it has to show user->language otherwise it has to show the old value
+$la = array();
+foreach (ElggTranslation::$languages as $lang){
+	$la[$lang] = elgg_echo($lang);
+}
+$user = elgg_get_logged_in_user_entity();
+
 $language_label = elgg_echo('language');
-$language_input = elgg_view('input/text', array(
+$language_input = elgg_view('input/dropdown', array(
         'name' => 'language',
-        'id' => 'language_id',
-	'value' => $vars['language']
+        'id' => 'blog_status',
+        'value' => $user->language,
+	'options_values' => $la	
 ));
 
 $categories_input = elgg_view('categories', $vars);
