@@ -149,9 +149,13 @@ function blog_multilanguage_page_handler($page) {
 			break;
 	}
 	
-	$params['sidebar'] .= elgg_view('blog/sidebar', array('page' => $page_type));
 
-	$body = elgg_view_layout('content', $params);
+	if($page_type == 'translate'){
+		$body = elgg_view_layout('one_column', $params);
+	}else{
+		$params['sidebar'] .= elgg_view('blog/sidebar', array('page' => $page_type));
+		$body = elgg_view_layout('content', $params);
+	}
 
 	echo elgg_view_page($params['title'], $body);
 }

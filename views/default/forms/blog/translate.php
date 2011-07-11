@@ -122,11 +122,20 @@ $access_input = elgg_view('input/access', array(
 	'name' => 'access_id',
 	'id' => 'blog_access_id',
 ));
+//THIS HAS TO BE MOVED FROM HERE
+//If is new it has to show user->language otherwise it has to show the old value
+$la = array();
+foreach (ElggTranslation::$languages as $lang){
+	$la[$lang] = elgg_echo($lang);
+}
+$user = elgg_get_logged_in_user_entity();
 
 $language_label = elgg_echo('language');
-$language_input = elgg_view('input/text', array(
+$language_input = elgg_view('input/dropdown', array(
         'name' => 'language',
-        'id' => 'language_id',
+        'id' => 'blog_status',
+        'value' => $user->language,
+	'options_values' => $la	
 ));
 
 $categories_input = elgg_view('categories', $vars);
@@ -139,25 +148,55 @@ $guid_input = elgg_view('input/hidden', array('name' => 'guid', 'value' => $vars
 echo <<<___HTML
 
 $draft_warning
-
+<div class="elgg-col-1of2">
 <div>
 	<label for="blog_title">$title_label_old</label>
 	$title_input_old
-	<label for="blog_title">$title_label</label>
-	$title_input
 </div>
-
 <div>
 	<label for="blog_excerpt">$excerpt_label_old</label>
 	$excerpt_input_old
+</div>
+
+<label for="blog_description">$body_label_old</label>
+        $body_input_old
+        <br />
+
+
+<div>
+        <label for="blog_language">$language_label</label>
+        $language_input
+        <br />
+</div>
+<div>
+        <label for="blog_tags">$tags_label</label>
+        $tags_input
+</div>
+
+<div>
+        <label for="blog_comments_on">$comments_label</label>
+        $comments_input
+</div>
+
+<div>
+        <label for="blog_access_id">$access_label_old</label>
+        $access_input_old
+</div>
+<div>
+	<label for="blog_status">$status_label_old</label>
+	$status_input_old
+</div>
+</div>
+
+<div class="elgg-col-1of2">
+<div>
+	<label for="blog_title">$title_label</label>
+	$title_input
+</div>
+<div>
 	<label for="blog_excerpt">$excerpt_label</label>
 	$excerpt_input
 </div>
-
-	<label for="blog_description">$body_label_old</label>
-	$body_input_old
-	<br />
-
 	<label for="blog_description">$body_label</label>
 	$body_input
 	<br />
@@ -169,29 +208,8 @@ $draft_warning
 </div>
 
 <div>
-	<label for="blog_tags">$tags_label</label>
-	$tags_input
-</div>
-
-<div>
-	<label for="blog_comments_on">$comments_label</label>
-	$comments_input
-</div>
-
-<div>
-	<label for="blog_access_id">$access_label_old</label>
-	$access_input_old
-</div>
-
-<div>
 	<label for="blog_access_id2">$access_label</label>
 	$access_input
-</div>
-
-
-<div>
-	<label for="blog_status">$status_label_old</label>
-	$status_input_old
 </div>
 
 <div>
@@ -199,7 +217,7 @@ $draft_warning
 	$status_input
 	
 </div>
-
+</div>
 $categories_input
 
 <div class="elgg-subtext pvm mbn elgg-divide-top">

@@ -10,7 +10,6 @@ $blog = elgg_extract('entity', $vars, FALSE);
 error_log("BLOG LANGUAGE  " . $blog->language);
 
 $user = elgg_get_logged_in_user_entity();
-var_dump($user);
 error_log("USER LANGUAGE " . $user->language);
 
 if (!$blog) {
