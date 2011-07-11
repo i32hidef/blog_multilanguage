@@ -73,7 +73,6 @@ if ($vars['guid']) {
 	$saved = elgg_echo('blog:never');
 }
 
-//We can make that the translated entity take the access and status and comments from the entity which is being translated.
 $status_label_old = elgg_echo('blog:status');
 $status_input_old = elgg_view('input/dropdown', array(
 	'name' => 'status',
@@ -110,6 +109,12 @@ $tags_input = elgg_view('input/tags', array(
 	'value' => $vars['tags']
 ));
 
+$tags_label2 = elgg_echo('tags');
+$tags_input2 = elgg_view('input/tags', array(
+        'name' => 'tags',
+        'id' => 'blog_tags',
+));
+
 $access_label_old = elgg_echo('access');
 $access_input_old = elgg_view('input/access', array(
 	'name' => 'access_id',
@@ -122,20 +127,30 @@ $access_input = elgg_view('input/access', array(
 	'name' => 'access_id',
 	'id' => 'blog_access_id',
 ));
-//THIS HAS TO BE MOVED FROM HERE
+
+//THIS HAS TO BE MOVED FROM HERE: Create a view for that.
 //If is new it has to show user->language otherwise it has to show the old value
-$la = array();
+$la= array();
 foreach (ElggTranslation::$languages as $lang){
-	$la[$lang] = elgg_echo($lang);
+        $la[$lang] = elgg_echo($lang);
 }
-$user = elgg_get_logged_in_user_entity();
 
 $language_label = elgg_echo('language');
 $language_input = elgg_view('input/dropdown', array(
         'name' => 'language',
         'id' => 'blog_status',
-        'value' => $user->language,
+        'value' => $vars['language'],
 	'options_values' => $la	
+));
+
+//Show the language of the user bydefault
+$user = elgg_get_logged_in_user_entity();
+$language_label2 = elgg_echo('language');
+$language_input2 = elgg_view('input/dropdown', array(
+        'name' => 'language',
+        'id' => 'blog_status',
+        'value' => $user->language,
+        'options_values' => $la 
 ));
 
 $categories_input = elgg_view('categories', $vars);
@@ -188,7 +203,7 @@ $draft_warning
 </div>
 </div>
 
-<div class="elgg-col-1of2">
+<div class="elgg-col-2of2">
 <div>
 	<label for="blog_title">$title_label</label>
 	$title_input
@@ -202,10 +217,16 @@ $draft_warning
 	<br />
 
 <div>
-	<label for="blog_language">$language_label</label>
-	$language_input
+	<label for="blog_language">$language_label2</label>
+	$language_input2
 	<br />
 </div>
+
+<div>
+        <label for="blog_tags2">$tags_label2</label>
+        $tags_input2
+</div>
+
 
 <div>
 	<label for="blog_access_id2">$access_label</label>
