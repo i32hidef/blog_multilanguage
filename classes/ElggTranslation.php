@@ -7,152 +7,16 @@
 class ElggTranslation extends ElggObject{
 	
 	public static $languages = array(
-		"aa",
-		"ab",
-		"af",
-		"am",
-		"ar",
-		"as",
-		"ay",
-		"az",
-		"ba",
-		"be",
-		"bg",
-		"bh",
-		"bi",
-		"bn",
-		"bo",
-		"br",
-		"ca",
-		"co",
-		"cs",
-		"cy",
-		"da",
-		"de",
-		"dz",
-		"el",
-		"en",
-		"eo",
-		"es",
-		"et",
-		"eu",
-		"fa",
-		"fi",
-		"fj",
-		"fo",
-		"fr",
-		"fy",
-		"ga",
-		"gd",
-		"gl",
-		"gn",
-		"gu",
-		"he",
-		"ha",
-		"hi",
-		"hr",
-		"hu",
-		"hy",
-		"ia",
-		"id",
-		"ie",
-		"ik",
-		//"i,
-		"is",
-		"it",
-		"iu",
-		"iw",
-		"ja",
-		"ji",
-		"jw",
-		"ka",
-		"kk",
-		"kl",
-		"km",
-		"kn",
-		"ko",
-		"ks",
-		"ku",
-		"ky",
-		"la",
-		"ln",
-		"lo",
-		"lt",
-		"lv",
-		"mg",
-		"mi",
-		"mk",
-		"ml",
-		"mn",
-		"mo",
-		"mr",
-		"ms",
-		"mt",
-		"my",
-		"na",
-		"ne",
-		"nl",
-		"no",
-		"oc",
-		"om",
-		"or",
-		"pa",
-		"pl",
-		"ps",
-		"pt",
-		"qu",
-		"rm",
-		"rn",
-		"ro",
-		"ru",
-		"rw",
-		"sa",
-		"sd",
-		"sg",
-		"sh",
-		"si",
-		"sk",
-		"sl",
-		"sm",
-		"sn",
-		"so",
-		"sq",
-		"sr",
-		"ss",
-		"st",
-		"su",
-		"sv",
-		"sw",
-		"ta",
-		"te",
-		"tg",
-		"th",
-		"ti",
-		"tk",
-		"tl",
-		"tn",
-		"to",
-		"tr",
-		"ts",
-		"tt",
-		"tw",
-		"ug",
-		"uk",
-		"ur",
-		"uz",
-		"vi",
-		"vo",
-		"wo",
-		"xh",
-		//"y,
-		"yi",
-		"yo",
-		"za",
-		"zh",
-		"zu",
+		"aa", "ab", "af", "am", "ar", "as", "ay", "az", "ba", "be", "bg", "bh", "bi", "bn", "bo", "br",	"ca", "co", "cs", "cy",	"da",
+		"de", "dz", "el", "en", "eo", "es", "et", "eu", "fa", "fi", "fj", "fo", "fr", "fy", "ga", "gd", "gl", "gn", "gu", "he", "ha",
+		"hi", "hr", "hu", "hy", "ia", "id", "ie", "ik",	/*"i,*/"is", "it", "iu", "iw", "ja", "ji", "jw", "ka", "kk", "kl", "km", "kn",
+		"ko", "ks", "ku", "ky", "la", "ln", "lo", "lt", "lv", "mg", "mi", "mk", "ml", "mn", "mo", "mr", "ms", "mt", "my", "na", "ne",
+		"nl", "no", "oc", "om", "or", "pa", "pl", "ps", "pt", "qu", "rm", "rn", "ro", "ru", "rw", "sa", "sd", "sg", "sh", "si", "sk",
+		"sl", "sm", "sn", "so", "sq", "sr", "ss", "st", "su", "sv", "sw", "ta", "te", "tg", "th", "ti", "tk", "tl", "tn", "to", "tr",
+		"ts", "tt", "tw", "ug", "uk", "ur", "uz", "vi", "vo", "wo", "xh",/*"y,*/"yi", "yo", "za", "zh",	"zu",
 
 	);
-
+	
 	/**
 	* Initialize some defaults values for the entity.
  	*/	
@@ -179,7 +43,8 @@ class ElggTranslation extends ElggObject{
 	}	
 
 	/**
-	* Save a tranlation
+	* Save a tranlation:
+	* 	Look if a translation already exists with this language, if it forward to edit this one, or maybe just to the view of this one.
 	*/
 	public function save(){
 		if(!parent::save()){
@@ -199,9 +64,12 @@ class ElggTranslation extends ElggObject{
 	*	
         */
         public function addTranslation($translation_guid){
-		//error_log("BLOG TRANSLATION ADD TRANSLATION");
                 $blog_guid = $this->getGUID();
 		error_log("ADDING TRANSLATION TO " . $this->guid . " WITH " . $translation_guid); 
+		
+		/*if(!$this->isTranslation()){
+			add_entity_relationship($blog_guid, "translation", $blog_guid);
+		}*/
 
                 if ($blog_guid == $translation_guid) {
                         return false;
@@ -217,7 +85,6 @@ class ElggTranslation extends ElggObject{
                 }
                 return add_entity_relationship($blog_guid, "translation", $translation_guid);
         }
-
 	
 	/**
 	* Get a translation
@@ -226,7 +93,7 @@ class ElggTranslation extends ElggObject{
 	* 	- Return false if doesnt not exist.
 	*/
 	public function getTranslation($language){
-		$entities = get_entities_from_relationship(array(
+		$entities = elgg_get_entities_from_relationship(array(
 			'relationship' => "translation",
 			'relationship_guid' => $this->getGUID()
         	));
@@ -239,8 +106,7 @@ class ElggTranslation extends ElggObject{
 		}
 	}
 
-
-	/**
+	/** Overload delete method and delete all translations for an entity
 	* Delete a translation
 	*	- Receives the language of the translation we want to delete.
   	*	- Return false if fails.
@@ -254,6 +120,44 @@ class ElggTranslation extends ElggObject{
 			}
 		}else{
 			return false;
+		}
+	}
+
+	//See in relations if has some translations
+	public function hasTranslations(){
+		$translations= FALSE;
+		error_log("TIENE TRADUCCIONES");
+		$relationships = get_entity_relationships($this->getGUID());
+		var_dump($relationships);
+		foreach($relationships as $relation){
+			if($relation->relationship == 'translation'){
+				$translations = TRUE;
+				error_log("SI");
+			}
+		}
+		if($translations){
+			return TRUE;
+		}else{
+			return FALSE;
+		}
+	}
+	
+	//See in the relations if is a translation of other blog
+	public function isTranslation(){
+		$translation = FALSE;
+		error_log("ES TRADUCCION");
+		$relationships = get_entity_relationships($this->getGUID(), TRUE);
+		var_dump($relationships);
+		foreach($relationships as $relation){
+			if($relation->relationship == 'translation' && $relation->guid_two == $this->getGUID()){
+				error_log("LO ES");
+				$translation = TRUE;
+			}
+		}
+		if($translation){
+			return TRUE;
+		}else{
+			return FALSE;
 		}
 	}
 

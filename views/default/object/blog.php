@@ -7,21 +7,11 @@
 
 $full = elgg_extract('full_view', $vars, FALSE);
 $blog = elgg_extract('entity', $vars, FALSE);
-error_log("BLOG LANGUAGE  " . $blog->language);
-
 $user = elgg_get_logged_in_user_entity();
-error_log("USER LANGUAGE " . $user->language);
 
 if (!$blog) {
 	return TRUE;
 }
-//We look for a translation
-//if it has translations in my language show this translation.
-//If not show this one and if i have access credential show the translation link
-/*if($blog->language != $user->language){
-	
-
-}else{*/
 	$owner = $blog->getOwnerEntity();
 	$container = $blog->getContainerEntity();
 	$categories = elgg_view('output/categories', $vars);
@@ -110,4 +100,3 @@ HTML;
 	$list_body = elgg_view('page/components/summary', $params);
 	echo elgg_view_image_block($owner_icon, $list_body);
 }
-//}

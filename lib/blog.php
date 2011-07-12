@@ -98,7 +98,17 @@ function blog_get_page_content_list($container_guid = NULL) {
 		);
 	}
 
-	$list = elgg_list_entities_from_metadata($options);
+	$user = elgg_get_logged_in_user_entity();
+	$enti = elgg_get_entities_from_metadata($options);
+	foreach($enti as $ent){
+		//It is not a translation and it has not translations with the language
+		if(!$ent->isTranslation() && !$ent->getTranslation($user->language)){
+			$list .= elgg_view_entity($ent);
+		}else if($ent->getLanguage() == $user->language){
+			$list .= elgg_view_entity($ent);
+		}
+	}
+	
 	if (!$list) {
 		$return['content'] = elgg_echo('blog:none');
 	} else {

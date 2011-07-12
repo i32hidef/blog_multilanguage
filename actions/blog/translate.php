@@ -33,6 +33,7 @@ if ($guid) {
 	//We save the translation entity	
 	$blogTranslated = new ElggBlog();
 	$blogTranslated->subtype = 'blog';
+	$blogTranslated->isTranslation(TRUE);
 	$new_post2 = TRUE;
 }
 
