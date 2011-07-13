@@ -1,11 +1,14 @@
 <?php
 /**
  * Elgg Translation:
- * Es un objecto que está relacionado con otro y del cual será su traducción 
+ * Create an ElggTranslation object designed to be extended by ElggBlog
  *
  */
 class ElggTranslation extends ElggObject{
-	
+
+	/**
+	 * Array with ISO 639-1 language codes
+	 */	
 	public static $languages = array(
 		"aa", "ab", "af", "am", "ar", "as", "ay", "az", "ba", "be", "bg", "bh", "bi", "bn", "bo", "br",	"ca", "co", "cs", "cy",	"da",
 		"de", "dz", "el", "en", "eo", "es", "et", "eu", "fa", "fi", "fj", "fo", "fr", "fy", "ga", "gd", "gl", "gn", "gu", "he", "ha",
@@ -18,34 +21,40 @@ class ElggTranslation extends ElggObject{
 	);
 	
 	/**
-	* Initialize some defaults values for the entity.
- 	*/	
+	 * Initialize some defaults values for the entity.
+ 	 */	
 	protected function initializeAttributes(){
 		parent::initializeAttributes();	
 	}
 	
+	/**
+	 * Return languages array
+	 */
 	public function getLanguageCodes(){
 		return $languages;
 	}
 
 	/**
-	* Set the language of a Translation
-	*/	
+	 * Set language of a Translation
+	 * @param string $language
+	 */	
 	public function setLanguage($language){
 		$this->language = $language;
 	}
 	
 	/*
-	* Get the language of a Translation
-	*/
+	 * Get language of a Translation
+	 * @return string 
+	 */
 	public function getLanguage(){
 		return $this->language;
 	}	
 
 	/**
-	* Save a tranlation:
-	* 	Look if a translation already exists with this language, if it forward to edit this one, or maybe just to the view of this one.
-	*/
+	 * Save a tranlation:
+	 * 	Look if a translation already exists with this language, if it forward to edit this one, or maybe just to the view of this one.
+	 * @return bool
+	 */
 	public function save(){
 		if(!parent::save()){
 			return false;
@@ -55,14 +64,10 @@ class ElggTranslation extends ElggObject{
 	}	
 	
 	/**
-        * Add a translation to a blog
-	* In order to add a translation we can do it in two ways.
-	* It has to look for the entity that is being translated, see if is a translation of other
-	* If is make this a translation of this one, if not make himself a translation of the first one.
-	* 	- Saving in the same row the language of the translation
-	*	- Creating other table with the codes of the languages
-	*	
-        */
+         * Add a translation to a blog
+ 	 * @param string $translation_guid
+	 * @return bool	
+         */
         public function addTranslation($translation_guid){
                 $blog_guid = $this->getGUID();
 		error_log("ADDING TRANSLATION TO " . $this->guid . " WITH " . $translation_guid); 
@@ -87,30 +92,29 @@ class ElggTranslation extends ElggObject{
         }
 	
 	/**
-	* Get a translation
-	* 	- Receives the language of the translation we want to get.
-	*	- Return the entity of the translation if succeed.
-	* 	- Return false if doesnt not exist.
-	*/
+	 * Get a translation entity
+	 * @param string $language
+	 * @return Entity|false Depending on success
+	 */
 	public function getTranslation($language){
 		$entities = elgg_get_entities_from_relationship(array(
 			'relationship' => "translation",
 			'relationship_guid' => $this->getGUID()
         	));
-		foreach($entities as $entitie){
-			if($entitie->language == $language){
-				return $entitie;
+		foreach($entities as $entity){
+			if($entity->language == $language){
+				return $entity;
 			}else{
 				return false;
 			}
 		}
 	}
 
-	/** Overload delete method and delete all translations for an entity
-	* Delete a translation
-	*	- Receives the language of the translation we want to delete.
-  	*	- Return false if fails.
-	*/
+	/** 
+	 * Delete a translation
+	 * @param string $language
+	 * @return Entity|false Depending on success
+	 */
 	public function deleteTranslation($language){
 		if($entity = getTranslation($language)){
 			if(elgg_instanceof($entity,'object','translation')){
@@ -123,16 +127,17 @@ class ElggTranslation extends ElggObject{
 		}
 	}
 
-	//See in relations if has some translations
+	/**
+	 * Look if has some translations
+	 * @return bool
+	 */
 	public function hasTranslations(){
 		$translations= FALSE;
-		error_log("TIENE TRADUCCIONES");
 		$relationships = get_entity_relationships($this->getGUID());
-		var_dump($relationships);
+		
 		foreach($relationships as $relation){
 			if($relation->relationship == 'translation'){
 				$translations = TRUE;
-				error_log("SI");
 			}
 		}
 		if($translations){
@@ -142,15 +147,16 @@ class ElggTranslation extends ElggObject{
 		}
 	}
 	
-	//See in the relations if is a translation of other blog
+	/**
+	 * See in the relations if is a translation of other blog
+	 * @return bool
+	 */
 	public function isTranslation(){
 		$translation = FALSE;
-		error_log("ES TRADUCCION");
 		$relationships = get_entity_relationships($this->getGUID(), TRUE);
 		var_dump($relationships);
 		foreach($relationships as $relation){
 			if($relation->relationship == 'translation' && $relation->guid_two == $this->getGUID()){
-				error_log("LO ES");
 				$translation = TRUE;
 			}
 		}
