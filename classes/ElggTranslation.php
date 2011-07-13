@@ -154,7 +154,6 @@ class ElggTranslation extends ElggObject{
 	public function isTranslation(){
 		$translation = FALSE;
 		$relationships = get_entity_relationships($this->getGUID(), TRUE);
-		var_dump($relationships);
 		foreach($relationships as $relation){
 			if($relation->relationship == 'translation' && $relation->guid_two == $this->getGUID()){
 				$translation = TRUE;
