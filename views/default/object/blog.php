@@ -12,6 +12,14 @@ $user = elgg_get_logged_in_user_entity();
 if (!$blog) {
 	return TRUE;
 }
+
+if(!$blog->isTranslation()){
+	if(false != ($translation = $blog->getTranslation($user->language))){
+	$blog = $translation;
+	}
+}else{
+	return TRUE;
+}
 	$owner = $blog->getOwnerEntity();
 	$container = $blog->getContainerEntity();
 	$categories = elgg_view('output/categories', $vars);

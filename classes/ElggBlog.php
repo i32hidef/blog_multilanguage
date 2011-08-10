@@ -2,7 +2,7 @@
 /**
  * Extended class to override the time_created
  */
-class ElggBlog extends ElggTranslation{
+class ElggBlog extends ElggObject{
 
 	/**
 	 * Set subtype to blog.

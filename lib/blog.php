@@ -17,7 +17,7 @@ function blog_get_page_content_read($guid = NULL) {
 	$return = array();
 
 	$blog = get_entity($guid);
-
+	var_dump($blog->isTranslation());
 	// no header or tabs for viewing an individual blog
 	$return['filter'] = '';
 	$return['header'] = '';
@@ -97,15 +97,21 @@ function blog_get_page_content_list($container_guid = NULL) {
 			array('name' => 'status', 'value' => 'published'),
 		);
 	}
-
+	var_dump($options);
 	$user = elgg_get_logged_in_user_entity();
 	$enti = elgg_get_entities_from_metadata($options);
+	
 	foreach($enti as $ent){
 		//It is not a translation and it has not translations with the language
-		if(!$ent->isTranslation() && !$ent->getTranslation($user->language)){
-			$list .= elgg_view_entity($ent);
-		}else if($ent->getLanguage() == $user->language){
-			$list .= elgg_view_entity($ent);
+		if(!$ent->isTranslation()){
+			var_dump($ent->getTranslation($user->language));
+			if(false == ($translation = $ent->getTranslation($user->language))){
+				error_log("PRIMERA");
+				$list .= elgg_view_entity($ent);
+			}else{ //if($ent->getLanguage() == $user->language){
+				error_log("SEGUNDA");
+				$list .= elgg_view_entity($translation);
+			}
 		}
 	}
 	

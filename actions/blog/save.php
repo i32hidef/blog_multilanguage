@@ -7,7 +7,7 @@
 
 // start a new sticky form session in case of failure
 elgg_make_sticky_form('blog');
-
+error_log("SAVING");
 // store errors to pass along
 $error = FALSE;
 $error_forward_url = REFERER;
